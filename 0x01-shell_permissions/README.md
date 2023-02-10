@@ -15,3 +15,4 @@
 12. This script ```mkdir -m 751 my_dir``` creates a directory called my_dir and gives it  a permission of 751 which means
 owner has full permission, groups are able to read and execute and others would be able to execute only
 13. This ```script chgrp school hello``` changes the group of hello to school
+14. This is the end
