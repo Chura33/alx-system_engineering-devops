@@ -1,4 +1,4 @@
-0.The ```su betty``` script switches the current user to ```betty'```
+0. The ```su betty``` script switches the current user to ```betty```
 1. The script ```whoami``` prints the username of the current user
 2. The ```sudo groups``` script prints all the groups the current user is part of
 3.The script ```sudo chown``` betty hello changes the owner of file hello to the user betty
