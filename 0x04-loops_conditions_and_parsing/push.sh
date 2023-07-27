@@ -2,5 +2,5 @@
 git add -A
 echo Enter your commit message
 read COMMIT
-git commit -m '$COMMIT'
+git commit -m '${COMMIT}'
 git push
