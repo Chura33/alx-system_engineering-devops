@@ -1,0 +1,12 @@
+The addition of the extra web servers, appllication servers and database systems are to add redundncy or to eliminate SPOF incase a server is down, the other servers can handle requests
+The addidion of the load balancer is to take charge of the splitting of the load according to a particular algorithm(Round Robin Scheduling) since all servers have the same capacity.
+My load balance is using Active Active set up which means that all servers are working and handling requests at the same time. Active Passive set up is used when one server waits on standby and is  only used when the main server crashes.
+The database cluster consists of a primary node (master) and replica nodes (slaves). 
+The primary node handles write operations, and replica nodes replicate data from the primary for read scalability and redundancy.
+Difference Between Primary and Replica:
+
+Primary: Handles write operations, updates data, and is responsible for ensuring data consistency.
+Replica: Handles read operations, replicates data from the primary, improves read scalability, and provides redundancy.
+SPOF are located in the Application server, load balancer and the primary database(for writing data)
+Security Issues include No firewall and ssl or HTTP which allows for successful data interception.
+No monitoring which means we can't track performance or even know when issues start except when there is failure.

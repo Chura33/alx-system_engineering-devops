@@ -1,0 +1,14 @@
+Firewalls (1 for each server and one for the load balancer): Firewalls add a layer of security, controlling incoming and outgoing traffic to prevent unauthorized access and potential threats.
+SSL certificate helps to encrypt data between the user and server
+Monitoring clients help to collect data from servers such as performance, temperature error logs
+Firewalls are for restricting the kind of data that is allowed in the infrastructure
+The traffic is served over https to ensure privacy between the user and server so that anyone who intercepts the data will not be able to decrypt
+Monitoring is used to check the performance of our infrastructure
+Monitoring devices collect data from various sources like cpu usage, network traffic etc.
+To monitor queries per second, I would configure  monitoring tools to track the number of incoming requests per unit of time, such as requests per minute or per second
+
+
+ISSUES
+1. Terminating ssl in load balancer is an issue because decrypted data enters the server and this could be dangerously used if the server is hacked or even by malicious staff.
+2. Only one sql server for accepting writes  is SPOF because if down, users would not be able to make post requests to the database.
+3. Having servers with all the same components (database, web server, and application server) can lead to potential issues in terms of redundancy, scalability, and resilience. 

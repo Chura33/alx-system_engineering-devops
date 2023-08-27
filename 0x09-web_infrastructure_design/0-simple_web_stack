@@ -1,0 +1,10 @@
+A server is a computer or software that responds to http requests by serving logic or html/css files
+The domain name points to the ip address of the server
+The www in www.foobar.com is a CNAME record: an alias that redirects to foobar.com or the correspoinding ip address
+The web server serves static content to the user or directs content that require logic or specific content to the application server
+The application server is used to perform several logical tasks and usually connects with the database to update or fetch data. It also generates dynamic content
+The database is used to store information relating to the website, also update, delete and query the data.
+The server communicatess with the user computer using the HTTP protocol.
+SPOF:There is only one server and if something happens to it, the website is down.
+Also, during maintenance, there is certainly going to be downtime as there is no other server
+Whenever the load on the sever reaches its capacit, it cannot scale and therefore, the server might crash or the website may behave unexpectedly or slowly.
