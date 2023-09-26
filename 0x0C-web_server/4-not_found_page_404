@@ -1,10 +1,15 @@
-#!/bin/bash
+#!/usr/bin/env bash
 # Update the package list and install Nginx with automatic "yes" answers to prompts
 sudo apt-get update
 sudo apt-get install -y nginx
 
-echo "Ceci n'est pas une page" | sudo tee /usr/share/nginx/html/custom_404.html
+# Create a simple HTML file with "Hello World!" content
+echo "Hello World!" | sudo tee /var/www/html/index.html
 
+# Create a custom 404 error page containing the required string
+echo "Ceci n'est pas une page" | sudo tee /var/www/html/custom_404.html
+
+# Configure Nginx to listen on port 80 with a custom configuration
 sudo bash -c 'cat <<EOF > /etc/nginx/sites-available/default
 server {
     listen 80 default_server;
@@ -17,10 +22,16 @@ server {
         try_files \$uri \$uri/ =404;
     }
 
+    location /redirect_me {
+        return 301 https://www.example.com/new_page;
+    }
+
     error_page 404 /custom_404.html;
     location = /custom_404.html {
         internal;
     }
 }
 EOF'
+
+# Restart Nginx without using systemctl
 sudo /etc/init.d/nginx restart
