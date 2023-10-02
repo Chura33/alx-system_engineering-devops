@@ -1,4 +1,4 @@
-#!/usr/bin/env/bash
+#!/usr/bin/env bash
 
 # Update the package list and install HAProxy with automatic "yes" answers to prompts
 sudo apt-get update
