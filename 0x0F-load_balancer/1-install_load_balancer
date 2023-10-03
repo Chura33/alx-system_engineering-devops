@@ -36,7 +36,8 @@ backend servers
     balance roundrobin
     server web-01 295619-web-01:80 check
     server web-02 295619-web-02:80 check
-EOF"
+EOF
+"
 
 # Test the HAProxy configuration
 sudo haproxy -c -f /etc/haproxy/haproxy.cfg
