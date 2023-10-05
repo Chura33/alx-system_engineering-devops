@@ -1,0 +1,53 @@
+#!/usr/bin/env bash
+
+# Update the package list and install HAProxy with automatic "yes" answers to prompts
+sudo apt-get update
+sudo apt-get install -y haproxy
+sudo apt-get install certbot python3-certbot-nginx
+sudo certbot certonly --nginx -d your-domain -d www.your-domain
+
+
+# Create a backup of the default HAProxy configuration file
+sudo cp /etc/haproxy/haproxy.cfg /etc/haproxy/haproxy.cfg.bak
+
+# Create a new HAProxy configuration file
+sudo bash -c "cat <<EOF > /etc/haproxy/haproxy.cfg
+global
+    log /dev/log local0
+    log /dev/log local1 notice
+    maxconn 4096
+    chroot /var/lib/haproxy
+    user haproxy
+    group haproxy
+    daemon
+
+defaults
+    log global
+    mode http
+    option httplog
+    option dontlognull
+    timeout connect 5000
+    timeout client 50000
+    timeout server 50000
+
+frontend www-http
+    bind *:80
+    reqadd X-Forwarded-Proto:\ http
+    default_backend www-backend
+
+frontend www-https
+    bind *:443 ssl crt /etc/letsencrypt/live/churaspace.tech/fullchain.pem
+    reqadd X-Forwarded-Proto:\ httpsdefault_backend www-backend
+
+backend www-backend
+    balance roundrobin
+    server web-01 295619-web-01:80 check
+    server web-02 295619-web-02:80 check
+    option httpchk GET / HTTP/1.1\r\nHost:\ www.holberton.online
+EOF"
+
+# Test the HAProxy configuration
+sudo haproxy -c -f /etc/haproxy/haproxy.cfg
+
+# Restart HAProxy to apply the changes
+sudo systemctl restart haproxy
