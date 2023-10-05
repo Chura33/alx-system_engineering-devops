@@ -25,5 +25,5 @@ sudo service nginx restart
 
 # Display Nginx status and active listening ports
 sudo service nginx status
-netstat -tuln | grep LISTEN
-echo "Nginx has been configured and is now listening on port 80."
+#netstat -tuln | grep LISTEN
+#echo "Nginx has been configured and is now listening on port 80."
