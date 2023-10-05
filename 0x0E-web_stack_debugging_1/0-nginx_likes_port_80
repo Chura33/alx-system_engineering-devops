@@ -47,9 +47,9 @@ Commercial support is available at
 </body>
 </html>" > /var/www/html/index.html
 # Restart Nginx to apply changes
-systemctl restart nginx
+sudo service nginx restart
 
 # Display Nginx status and active listening ports
-systemctl status nginx
+sudo service nginx status
 netstat -tuln | grep LISTEN
 echo "Nginx has been configured and is now listening on port 80."
