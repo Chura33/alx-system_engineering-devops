@@ -1,0 +1,42 @@
+#!/usr/bin/env bash
+# Function to query DNS and display information
+query_dns() {
+  local domain="$1"
+  local subdomain="$2"
+  
+  # Use dig to query DNS information
+  result=$(dig "$subdomain.$domain" +short)
+
+  # Check if there is any output
+  if [ -z "$result" ]; then
+    echo "The subdomain $subdomain does not exist for $domain"
+  else
+    # Determine the record type (A or CNAME)
+    record_type=$(dig "$subdomain.$domain" | awk '{for (i=1; i<=NF; i++) { if ($i == "IN" && !(seen[$(i+1)]++)) print $(i+1) } }')
+    
+    # Display the information
+    echo "The subdomain $subdomain is a $record_type record and points to $result"
+  fi
+}
+
+# Check the number of arguments
+if [ $# -lt 1 ]; then
+  echo "Usage: $0 <domain> [subdomain]"
+  exit 1
+fi
+
+domain="$1"
+subdomain="$2"
+
+# Default subdomains to audit
+subdomains=("www" "lb-01" "web-01" "web-02")
+
+# If subdomain is provided, only query that subdomain
+if [ -n "$subdomain" ]; then
+  query_dns "$domain" "$subdomain"
+else
+  # Query all default subdomains
+  for sub in "${subdomains[@]}"; do
+    query_dns "$domain" "$sub"
+  done
+fi
