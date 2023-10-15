@@ -1,21 +1,18 @@
 #!/usr/bin/env bash
 # Update package list and install Nginx
-sudo apt update
+#sudo apt update
 sudo apt install -y nginx
 
 # Create a default Nginx configuration file
-cat <<EOF > /etc/nginx/sites-available/default
-server {
-    listen 80 default_server;
-    listen [::]:80 default_server;
-    server_name _;
-
-    root /var/www/html;
-    index index.html;
-
-    location / {
-        try_files \$uri \$uri/ =404;
-    }
+cat <<EOF > /etc/nginx/nginx.conf
+events{}
+http {
+	server {
+	    listen 80 default_server;
+	    listen [::]:80 default_server;
+	    server_name _;
+	    root /usr/share/nginx/html;
+	}
 }
 EOF
 
