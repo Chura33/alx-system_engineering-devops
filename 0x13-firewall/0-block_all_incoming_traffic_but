@@ -1,4 +1,6 @@
 #!/usr/bin/env bash
+#This script installs and configures UFW to allow connections on poets 22, 80 and 443
+
 sudo apt install -y ufw
 sudo ufw allow ssh
 sudo ufw allow https
