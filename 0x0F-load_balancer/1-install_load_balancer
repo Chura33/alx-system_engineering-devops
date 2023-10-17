@@ -1,14 +1,16 @@
 #!/usr/bin/env bash
-# Update the package list and install HAProxy with automatic "yes" answers to prompts
+
+# Check if the script is run as root
+if [ "$EUID" -ne 0 ]; then
+  echo "Please run this script as root or with sudo."
+  exit 1
+fi
+
+# Install HAProxy
 sudo apt-get update
-sudo apt-get install -y haproxy
-
-# Create a backup of the default HAProxy configuration file
-sudo cp /etc/haproxy/haproxy.cfg /etc/haproxy/haproxy.cfg.bak
-
-# Create a new HAProxy configuration file
-sudo bash -c "cat <<EOF > /etc/haproxy/haproxy.cfg
-global
+sudo apt-get install haproxy=2.0.\*
+# Create a custom HAProxy configuration
+echo "global
     log /dev/log local0
     log /dev/log local1 notice
     chroot /var/lib/haproxy
@@ -27,19 +29,18 @@ defaults
     timeout client 50000
     timeout server 50000
 
-frontend http-in
+frontend load-balancer
     bind *:80
-    default_backend servers
+    default_backend web-servers
 
-backend servers
+backend web-servers
     balance roundrobin
-    server web-01 295619-web-01:80 check
-    server web-02 295619-web-02:80 check
-EOF
-"
+    server 295619-web-01 54.164.64.95:80 check
+    server 295619-web-02 52.91.118.112:80 check" > /etc/haproxy/haproxy.cfg
+# Enable HAProxy service
+systemctl enable haproxy
 
-# Test the HAProxy configuration
-sudo haproxy -c -f /etc/haproxy/haproxy.cfg
-
-# Restart HAProxy to apply the changes
-sudo systemctl restart haproxy
+# Restart HAProxy service
+sudo service haproxy restart
+# Verify HAProxy status
+sudo service haproxy status
