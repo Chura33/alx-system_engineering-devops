@@ -1,13 +1,15 @@
 #!/usr/bin/env bash
-#this file simple adds the header X-served-by to the nginx response
-
+# This script adds a new header file X-served-by
 HEADER_NAME="X-Served-By"
 HEADER_VALUE="$(hostname)"
 
-NGINX_CONFIG="/etc/nginx/nginx.conf"
+# Nginx configuration file path
+NGINX_CONFIG="/etc/nginx/sites-enabled/default"
 
+# Check if the Nginx config file exists
 if [ -f "$NGINX_CONFIG" ]; then
-    sed -i "/http {/a \ \ \ \ add_header $HEADER_NAME '$HEADER_VALUE';" "$NGINX_CONFIG"
+    # Add the custom header to the Nginx config
+    sed -i "/server {/a \ \ \ \ add_header $HEADER_NAME '$HEADER_VALUE';" "$NGINX_CONFIG"
 
     # Test the Nginx configuration for syntax errors
     if nginx -t; then
