@@ -1,28 +1,22 @@
 #!/usr/bin/env bash
-# Update the package list and install Nginx with automatic "yes" answers to prompts
-sudo apt-get update
-sudo apt-get install -y nginx
+#this file simple adds the header X-served-by to the nginx response
 
-# Get the hostname of the server
-hostname=$(hostname)
+HEADER_NAME="X-Served-By"
+HEADER_VALUE="$(hostname)"
 
-# Create a custom Nginx configuration file
-sudo bash -c "cat <<EOF > /etc/nginx/sites-available/default
-server {
-    listen 80 default_server;
-    listen [::]:80 default_server;
+NGINX_CONFIG="/etc/nginx/nginx.conf"
 
-    root /var/www/html;
-    index index.html;
+if [ -f "$NGINX_CONFIG" ]; then
+    sed -i "/http {/a \ \ \ \ add_header $HEADER_NAME '$HEADER_VALUE';" "$NGINX_CONFIG"
 
-    location / {
-        try_files \$uri \$uri/ =404;
-        add_header X-Served-By $hostname; # Add the custom header with the server's hostname
-    }
-}
-EOF"
-
-# Restart Nginx to apply changes
-sudo systemctl restart nginx
-
-echo "Hello World!" | sudo tee /var/www/html/index.html
+    # Test the Nginx configuration for syntax errors
+    if nginx -t; then
+        # Reload Nginx to apply the changes
+        systemctl reload nginx
+        echo "Nginx configuration updated and reloaded successfully."
+    else
+        echo "Nginx configuration test failed. Please check your configuration for errors."
+    fi
+else
+    echo "Nginx configuration file not found at $NGINX_CONFIG. Please make sure the path is correct."
+fi
