@@ -1,32 +1,7 @@
 #!/usr/bin/env bash
-# Step 1: Install NGINX (if not already installed)
-# This assumes NGINX is not already installed.
-# If NGINX is already installed, you may need to adjust this step accordingly.
-apt-get update
-apt-get install -y nginx
-
-# Step 2: Configure NGINX to run as the nginx user
-# Modify the NGINX systemd service file to run as the nginx user.
-sed -i 's/^user .*/user nginx;/' /etc/nginx/nginx.conf
-
-# Step 3: Configure NGINX to listen on all active IPs on port 8080
-# Modify the default site configuration to listen on port 8080 and all available IPs.
-echo "server {
-    listen 8080;
-    listen [::]:8080;
-    server_name _;
-    location / {
-        root /usr/share/nginx/html;
-        index index.html;
-    }
-}" > /etc/nginx/sites-available/default
-
-# Step 4: Reload NGINX to apply the changes
-service nginx reload
-
-# Step 5: Display the NGINX user for verification
-echo "NGINX is now configured to run as the nginx user."
-
-# Run NGINX in the foreground to keep the container running
-nginx -g 'daemon off;'
-
+# runs nginx as nginx
+pkill apache2
+chown nginx:nginx /etc/nginx/nginx.conf
+#chmod 777 /etc/nginx/nginx.conf
+sed -i 's/80/8080/g' /etc/nginx/sites-available/default
+sudo -u nginx service nginx start
