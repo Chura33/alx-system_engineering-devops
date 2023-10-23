@@ -9,23 +9,24 @@ from sys import argv
 import json
 
 
-users = requests.get("https://jsonplaceholder.typicode.com/users")
-users = users.json()
+if __name__ == '__main__':
+    users = requests.get("https://jsonplaceholder.typicode.com/users")
+    users = users.json()
 
-todos = requests.get('https://jsonplaceholder.typicode.com/todos')
-todos = todos.json()
-todoAll = {}
+    todos = requests.get('https://jsonplaceholder.typicode.com/todos')
+    todos = todos.json()
+    todoAll = {}
 
-for user in users:
-    taskList = []
-    for todo in todos:
-        if todo.get('userId') == user.get('id'):
-            taskList.append({
-                "username": user.get('username'),
-                "task": todo.get('title'),
-                "completed": todo.get('completed')
-                })
-    todoAll[user.get('id')] = taskList
+    for user in users:
+        taskList = []
+        for todo in todos:
+            if todo.get('userId') == user.get('id'):
+                taskList.append({
+                    "username": user.get('username'),
+                    "task": todo.get('title'),
+                    "completed": todo.get('completed')
+                    })
+        todoAll[user.get('id')] = taskList
 
-with open('todo_all_employees.json', mode='w') as f:
-    json.dump(todoAll, f)
+    with open('todo_all_employees.json', mode='w') as f:
+        json.dump(todoAll, f)
