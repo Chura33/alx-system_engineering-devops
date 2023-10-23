@@ -4,11 +4,6 @@ and puts them in a json file
 """
 
 
-import requests
-from sys import argv
-import json
-
-
 if __name__ == '__main__':
 
     import json
