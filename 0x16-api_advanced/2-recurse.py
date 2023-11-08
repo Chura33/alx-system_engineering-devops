@@ -1,14 +1,17 @@
 #!/usr/bin/python3
-"""This module uses recursion
-ueries the Reddit API and returns
-a list containing the titles of all hot articles
-for a given subreddit."""
+"""
+Recursive function that queries the Reddit API and returns
+a list containing the titles of all hot articles for a given subreddit.
+If no results are found for the given subreddit,
+the function should return None.
+"""
 
 import requests
 
 
-def recurse(subreddit, hot_list=[], after=''):
-    """ Queries the Reddit API and returns
+def recurse(subreddit, hot_list=[], after=""):
+    """
+    Queries the Reddit API and returns
     a list containing the titles of all hot articles for a given subreddit.
 
     - If not a valid subreddit, return None.
@@ -19,9 +22,9 @@ def recurse(subreddit, hot_list=[], after=''):
         params={"after": after},
     )
 
-    if res.status_code = 200:
-        for obj in res.json().get("data").get("children"):
-            dat = obj.get("data")
+    if res.status_code == 200:
+        for get_data in req.json().get("data").get("children"):
+            dat = get_data.get("data")
             title = dat.get("title")
             hot_list.append(title)
         after = res.json().get("data").get("after")
@@ -32,3 +35,4 @@ def recurse(subreddit, hot_list=[], after=''):
             return recurse(subreddit, hot_list, after)
     else:
         return None
+
