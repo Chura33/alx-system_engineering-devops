@@ -20,7 +20,7 @@ def recurse(subreddit, hot_list=[], after=''):
     )
 
     if res.status_code = 200:
-        for obj in res.get("data").get("children"):
+        for obj in res.json().get("data").get("children"):
             dat = obj.get("data")
             title = dat.get("title")
             hot_list.append(title)
